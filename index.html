@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta id="viewport" name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1; user-scalable=no;">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>*{padding: 0;margin: 0;}</style>
+</head>
+<body>
+  <div>
+    <span id="box"></span>
+    <input type="button" id="btn" value="加一"/>
+  </div>
+
+  <!-- <script src="./js/common.js"></script> -->
+  <script src="./js/Watcher.js"></script>
+  <script src="./js/Dependency.js"></script>
+  <script src="./js/Observer.js"></script>
+  <script>
+    let test = {a:1,b:2,c:{cc:333},d:[4,44,444]};
+    new Observer(test);
+
+    test.a = 2;
+    // logInHTML(test)
+
+    test.b = {};
+    // logInHTML(test)
+    
+    test.b.bb = 222;
+    // logInHTML(test)
+    
+    test.c = {cccc:3333}
+    // logInHTML(test)
+    
+    //模拟模版引擎，向dom中添加对obj的更新操作
+    var box = document.getElementById("box");
+    box.innerHTML = test.a;
+    new Watcher(test,"a",function(val){
+      box.innerHTML = val
+    })
+
+    document.getElementById("btn").onclick = function(){
+      //只要对test更新，就能自动更新dom
+      test.a ++;
+    }
+
+    test.d.push(4444)
+    test.d.pop()
+    test.d.push({dd:44})
+    test.d[3].dd = 444;//dd被监听
+
+    // logInHTML(test.d.__ob__)
+    console.log(test)
+  </script>
+</body>
+</html>
